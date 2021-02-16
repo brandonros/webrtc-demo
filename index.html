@@ -110,7 +110,7 @@
       }
 
       const set = async (key, value) => {
-        const response = await fetch('/state', {
+        const response = await fetch('/api/state', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -127,14 +127,14 @@
 
       const waitFor = async (key) => {
         for (;;) {
-          const response = await fetch('/state')
+          const response = await fetch(`/api/state/${key}`)
           if (response.status !== 200) {
             throw new Error(`Invalid status: ${response.status}`)
           }
           const responseBody = await response.json()
-          const state = responseBody
-          if (state[key]) {
-            return state[key]
+          const value = responseBody
+          if (value !== undefined) {
+            return value
           }
           await delay(1000)
         }
