@@ -110,7 +110,7 @@
       }
 
       const set = async (key, value) => {
-        const response = await fetch('/api/state', {
+        const response = await fetch(`/api/state/${key}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -132,8 +132,8 @@
             throw new Error(`Invalid status: ${response.status}`)
           }
           const responseBody = await response.json()
-          const value = responseBody
-          if (value !== undefined) {
+          const { value } = responseBody
+          if (value !== null) {
             return value
           }
           await delay(1000)
@@ -145,13 +145,13 @@
         const mode = document.querySelector('#mode').value
         if (mode === 'producer') {
           const { producer, producerDetails } = await initProducer()
-          await set(`${channelName}:producerDetails`, producerDetails)
-          const consumerDetails = await waitFor(`${channelName}:consumerDetails`)
+          await set(`producerDetails:${channelName}`, producerDetails)
+          const consumerDetails = await waitFor(`consumerDetails:${channelName}`)
           await onConsumer(producer, consumerDetails)
         } else if (mode === 'consumer') {
-          const producerDetails = await waitFor(`${channelName}:producerDetails`)
+          const producerDetails = await waitFor(`producerDetails:${channelName}`)
           const consumerDetails = await initConsumer(producerDetails)
-          await set(`${channelName}:consumerDetails`, consumerDetails)
+          await set(`consumerDetails:${channelName}`, consumerDetails)
         }
       })
     </script>

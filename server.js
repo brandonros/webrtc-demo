@@ -8,12 +8,15 @@ app.use(express.json())
 // static
 app.get('/', express.static('./'))
 // insert
-app.put('/api/state', (req, res) => {
-  state[req.body.key] = req.body.value
+app.put('/api/state/:key', (req, res) => {
+  state[req.params.key] = req.body.value
   res.status(204)
   res.end()
 })
 // get
-app.get('/api/state/:key', (req, res) => res.send(state[req.params.key]))
+app.get('/api/state/:key', (req, res) => {
+  const value = state[req.params.key] || null
+  res.send({ value })
+})
 // bind + listen
 app.listen(3000, () => console.log('Listening...'))
