@@ -1,2 +1,2 @@
 # webrtc-demo
-WebSocket signaling server + producer/consumer screen sharing
+Express signaling server + producer/consumer screen sharing
