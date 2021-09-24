@@ -8,8 +8,8 @@ export const initConsumer = async (producerDetails, stream, tracks) => {
   // on incoming track
   const trackPromise = new Promise((resolve, reject) => {
     consumer.ontrack = (event) => {
-      document.querySelector('#video').srcObject = event.streams[0]
-      document.querySelector('#video').play()
+      document.querySelector('#theirVideo').srcObject = event.streams[0]
+      document.querySelector('#theirVideo').play()
       resolve()
     }
   })
