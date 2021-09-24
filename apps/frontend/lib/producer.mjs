@@ -11,13 +11,13 @@ export const getStreamAndTracks = async (type) => {
   }
 }
 
-export const initProducer = async (stream, tracks) => {
+export const initProducer = async (stream, tracks, type) => {
   // set up producer
   const producer = new RTCPeerConnection({
     iceServers
   })
   // get producer ice candidates
-  const promise = new Promise((resolve, reject) => {
+  const iceCandidatesPromise = new Promise((resolve, reject) => {
     const iceCandidates = []
     producer.onicecandidate = (event) => {
       if (event.candidate) {
@@ -25,6 +25,14 @@ export const initProducer = async (stream, tracks) => {
       } else {
         resolve(iceCandidates)
       }
+    }
+  })
+  // on incoming tracks
+  const trackPromise = new Promise((resolve, reject) => {
+    producer.ontrack = (event) => {
+      document.querySelector('#video').srcObject = event.streams[0]
+      document.querySelector('#video').play()
+      resolve()
     }
   })
   // add tracks to producer
@@ -35,11 +43,15 @@ export const initProducer = async (stream, tracks) => {
   // set producer local description
   await producer.setLocalDescription(await producer.createOffer())
   // wait for all producer ice candidates
-  const iceCandidates = await promise
+  const iceCandidates = await iceCandidatesPromise
   // send to consumer
   const producerDetails = {
     iceCandidates,
     localDescription: producer.localDescription
+  }
+  // wait for track
+  if (type === 'videoAndAudio') {
+    await trackPromise
   }
   return {
     producer,
