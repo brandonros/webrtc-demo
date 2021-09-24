@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-sacle=1, maximum-scale=1, user-scalable=no">
   </head>
 
   <body>
@@ -17,8 +18,8 @@
     </select>
     <input type="button" id="connect" value="Connect"><br>
 
-    <video id="theirVideo"></video>
-    <video id="ourVideo"></video>
+    <video id="theirVideo" autoplay playsinline></video>
+    <video id="ourVideo" autoplay playsinline muted></video>
 
     <script type="module" src="app.mjs"></script>
   </body>
