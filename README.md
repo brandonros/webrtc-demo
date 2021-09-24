@@ -1,5 +1,5 @@
 # webrtc-demo
-Express signaling server + producer/consumer screen sharing
+Express signaling server + producer/consumer screen/video/audio sharing
 
 ## How to run
 
