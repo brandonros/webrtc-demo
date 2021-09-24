@@ -1,16 +1,17 @@
 import iceServers from './ice-servers.mjs'
 
-export const getDisplayMedia = async () => {
-  const stream = await navigator.mediaDevices.getDisplayMedia()
+export const getStreamAndTracks = async (type) => {
+  const stream = type === 'screenShare' ?
+    await navigator.mediaDevices.getDisplayMedia() :
+    await navigator.mediaDevices.getUserMedia({audio: true, video: true})
   const tracks = stream.getTracks()
-  const track = tracks[0]
   return {
     stream,
-    track
+    tracks
   }
 }
 
-export const initProducer = async (stream, track) => {
+export const initProducer = async (stream, tracks) => {
   // set up producer
   const producer = new RTCPeerConnection({
     iceServers
@@ -26,8 +27,11 @@ export const initProducer = async (stream, track) => {
       }
     }
   })
-  // add track to producer
-  producer.addTrack(track, stream)
+  // add tracks to producer
+  for (let i = 0; i < tracks.length; ++i) {
+    const track = tracks[i]
+    producer.addTrack(track, stream)
+  }
   // set producer local description
   await producer.setLocalDescription(await producer.createOffer())
   // wait for all producer ice candidates

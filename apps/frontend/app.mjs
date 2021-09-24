@@ -1,5 +1,5 @@
 import {
-  getDisplayMedia,
+  getStreamAndTracks,
   initProducer,
   onConsumer
 } from './lib/producer.mjs'
@@ -14,9 +14,10 @@ import {
 document.querySelector('#connect').addEventListener('click', async (event) => {
   const channelName = document.querySelector('#channelName').value
   const mode = document.querySelector('#mode').value
+  const type = document.querySelector('#type').value
   if (mode === 'producer') {
-    const { stream, track } = await getDisplayMedia()
-    const { producer, producerDetails } = await initProducer(stream, track)
+    const { stream, tracks } = await getStreamAndTracks(type)
+    const { producer, producerDetails } = await initProducer(stream, tracks)
     await signalingServerSet(`producerDetails:${channelName}`, producerDetails)
     const consumerDetails = await signalingServerPollFor(`consumerDetails:${channelName}`)
     await onConsumer(producer, consumerDetails)
