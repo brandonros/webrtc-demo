@@ -1,4 +1,4 @@
-import iceServers from './ice-servers.mjs'
+import { iceServers } from './config.mjs'
 
 export const initConsumer = async (producerDetails, stream, tracks) => {
   // set up consumer

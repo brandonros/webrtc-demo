@@ -4,9 +4,9 @@ import {
   onConsumer
 } from './lib/producer.mjs'
 import {
-  signalingServerSet,
-  signalingServerPollFor
-} from './lib/signaling-server.mjs'
+  set,
+  waitFor
+} from './lib/api.mjs'
 import {
   initConsumer
 } from './lib/consumer.mjs'
@@ -39,23 +39,23 @@ const initEvents = () => {
           document.querySelector('#ourVideo').srcObject = stream
         }
         const { producer, producerDetails } = await initProducer(stream, tracks)
-        await signalingServerSet(`producerDetails:${channelName}`, producerDetails)
-        const consumerDetails = await signalingServerPollFor(`consumerDetails:${channelName}`)
+        await set(`producerDetails:${channelName}`, producerDetails)
+        const consumerDetails = await waitFor(`consumerDetails:${channelName}`, 1000)
         await onConsumer(producer, consumerDetails)
         // clean up
-        await signalingServerSet(`producerDetails:${channelName}`, null)
-        await signalingServerSet(`consumerDetails:${channelName}`, null)
+        await set(`producerDetails:${channelName}`, null)
+        await set(`consumerDetails:${channelName}`, null)
       } else if (mode === 'consumer') {
         if (type === 'videoAndAudio') {
           const { stream, tracks } = await getStreamAndTracks(type)
           document.querySelector('#ourVideo').srcObject = stream
-          const producerDetails = await signalingServerPollFor(`producerDetails:${channelName}`)
+          const producerDetails = await waitFor(`producerDetails:${channelName}`, 1000)
           const { consumerDetails } = await initConsumer(producerDetails, stream, tracks)
-          await signalingServerSet(`consumerDetails:${channelName}`, consumerDetails)
+          await set(`consumerDetails:${channelName}`, consumerDetails)
         } else {
-          const producerDetails = await signalingServerPollFor(`producerDetails:${channelName}`)
+          const producerDetails = await waitFor(`producerDetails:${channelName}`, 1000)
           const { consumerDetails } = await initConsumer(producerDetails)
-          await signalingServerSet(`consumerDetails:${channelName}`, consumerDetails)
+          await set(`consumerDetails:${channelName}`, consumerDetails)
         }
       }
     } catch (err) {

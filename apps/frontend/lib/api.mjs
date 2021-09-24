@@ -1,7 +1,8 @@
+import { signalingServer } from './config.mjs'
 import { delay } from './utilities.mjs'
 
-export const signalingServerSet = async (key, value) => {
-  const response = await fetch(`/api/state/${key}`, {
+export const set = async (key, value) => {
+  const response = await fetch(`${signalingServer}/api/state/${key}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -16,9 +17,9 @@ export const signalingServerSet = async (key, value) => {
   }
 }
 
-export const signalingServerPollFor = async (key) => {
+export const waitFor = async (key, interval) => {
   for (;;) {
-    const response = await fetch(`/api/state/${key}`)
+    const response = await fetch(`${signalingServer}/api/state/${key}`)
     if (response.status !== 200) {
       throw new Error(`Invalid status: ${response.status}`)
     }
@@ -27,6 +28,6 @@ export const signalingServerPollFor = async (key) => {
     if (value !== null) {
       return value
     }
-    await delay(1000)
+    await delay(interval)
   }
 }

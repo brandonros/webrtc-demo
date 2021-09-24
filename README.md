@@ -5,7 +5,7 @@ Express signaling server + producer/consumer screen/video/audio sharing
 
 1. clone
 1. `npx lerna bootstrap`
-1. `npx lerna run start`
+1. `npx lerna run start --stream`
 
 ## Example URLs
 

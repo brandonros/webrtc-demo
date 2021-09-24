@@ -1,4 +1,4 @@
-import iceServers from './ice-servers.mjs'
+import { iceServers } from './config.mjs'
 
 export const getStreamAndTracks = async (type) => {
   const stream = type === 'screenShare' ?

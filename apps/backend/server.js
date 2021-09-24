@@ -5,7 +5,11 @@ const state = {}
 const app = express()
 // middleware
 app.use(express.json())
-// insert
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`)
+  next()
+})
+// upsert
 app.put('/api/state/:key', (req, res) => {
   state[req.params.key] = req.body.value
   res.status(204)
@@ -21,4 +25,4 @@ app.get('/api/state/:key', (req, res) => {
 // static assets
 app.use('/', express.static('./node_modules/frontend/'))
 // bind + listen
-app.listen(3000, () => console.log('Listening...'))
+app.listen(process.env.PORT || 3000, () => console.log('Listening...'))
