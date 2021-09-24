@@ -40,7 +40,8 @@ export const initProducer = async (stream, tracks, type) => {
     producer.addTrack(track, stream)
   }
   // set producer local description
-  await producer.setLocalDescription(await producer.createOffer())
+  const offer = await producer.createOffer()
+  await producer.setLocalDescription(offer)
   // wait for all producer ice candidates
   const iceCandidates = await iceCandidatesPromise
   // send to consumer

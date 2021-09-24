@@ -27,7 +27,8 @@ export const initConsumer = async (producerDetails, stream, tracks) => {
     await consumer.addIceCandidate(new RTCIceCandidate(iceCandidate))
   }
   // make consumer accept remote offer
-  await consumer.setLocalDescription(await consumer.createAnswer())
+  const answer = await consumer.createAnswer()
+  await consumer.setLocalDescription(answer)
   // get ice candidates
   const iceCandidatesPromise = new Promise((resolve, reject) => {
     const iceCandidates = []
