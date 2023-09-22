@@ -59,6 +59,7 @@ const initEvents = () => {
         }
       }
     } catch (err) {
+      console.error(err)
       alert(err)
     }
   })

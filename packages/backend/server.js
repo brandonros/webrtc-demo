@@ -23,6 +23,7 @@ app.get('/api/state/:key', (req, res) => {
   })
 })
 // static assets
-app.use('/', express.static('./node_modules/frontend/'))
+console.log(process.cwd())
+app.use('/', express.static('../frontend/'))
 // bind + listen
 app.listen(process.env.PORT || 3000, () => console.log('Listening...'))
