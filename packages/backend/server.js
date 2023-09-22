@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 
 const state = {}
 
@@ -23,7 +24,6 @@ app.get('/api/state/:key', (req, res) => {
   })
 })
 // static assets
-console.log(process.cwd())
-app.use('/', express.static('../frontend/'))
+app.use('/', express.static('../../node_modules/frontend/'))
 // bind + listen
-app.listen(process.env.PORT || 3000, () => console.log('Listening...'))
+app.listen(parseInt(process.env.PORT || '8080'), () => console.log('Listening...'))
